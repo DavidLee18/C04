@@ -18,5 +18,8 @@ void	ft_putstr(char *str)
 
 	i = 0;
 	while (str[i])
+	{
 		write(STDOUT_FILENO, str + i, 1);
+		i++;
+	}
 }

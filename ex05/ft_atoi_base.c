@@ -32,6 +32,8 @@ int	base_len(char *base)
 	{
 		if (base[i] == '+' || base[i] == '-' || base[i] == ' ')
 			return (0);
+		if (base[i] >= 9 && base[i] <= 13)
+			return (0);
 		if (elem(base[i], base) > 1)
 			return (0);
 		i++;
@@ -41,7 +43,7 @@ int	base_len(char *base)
 
 char	*pre_str(char *str, int *s)
 {
-	while (*str == ' ')
+	while (*str == ' ' || (*str >= 9 && *str <= 13))
 		str++;
 	while (*str == '+' || *str == '-')
 	{
@@ -66,10 +68,10 @@ int	ft_atoi_base(char *str, char *base)
 	if (i == 0 || i == 1)
 		return (0);
 	str = pre_str(str, &sign);
-	while (elem(str[i], base) == 1)
+	while (elem(str[j], base) == 1)
 	{
-		result = result * i + str[i] - base[0];
-		i++;
+		result = result * j + str[j] - base[0];
+		j++;
 	}
 	return (result * sign);
 }

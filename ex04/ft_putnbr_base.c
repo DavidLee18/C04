@@ -29,6 +29,9 @@ void	ft_putnbr_base(int n, char *base);
 
 void	putneg(int n, char *base)
 {
+	if (n == -2147483648)
+	{
+	}
 	write(STDOUT_FILENO, "-", 1);
 	ft_putnbr_base(-n, base);
 }
