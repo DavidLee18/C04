@@ -1,16 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_base.c                                   :+:      :+:    :+:   */
+/*   ft_atoi_base.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaehylee <jaehylee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/22 15:59:43 by jaehylee          #+#    #+#             */
-/*   Updated: 2024/08/22 15:59:43 by jaehylee         ###   ########.fr       */
+/*   Created: 2024/08/25 12:08:48 by jaehylee          #+#    #+#             */
+/*   Updated: 2024/08/25 12:08:48 by jaehylee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <unistd.h>
 
 int	elem(char c, char *str)
 {
@@ -25,36 +23,53 @@ int	elem(char c, char *str)
 	return (count);
 }
 
-void	ft_putnbr_base(int n, char *base);
-
-void	putneg(int n, char *base)
-{
-	write(STDOUT_FILENO, "-", 1);
-	ft_putnbr_base(-n, base);
-}
-
-void	ft_putnbr_base(int n, char *base)
+int	base_len(char *base)
 {
 	int	i;
 
 	i = 0;
 	while (base[i])
 	{
-		if (base[i] == '+' || base[i] == '-')
-			return ;
+		if (base[i] == '+' || base[i] == '-' || base[i] == ' ')
+			return (0);
 		if (elem(base[i], base) > 1)
-			return ;
+			return (0);
 		i++;
 	}
-	if (i == 0 || i == 1)
-		return ;
-	if (n < 0)
-		putneg(n, base);
-	else if (n < i)
-		write(STDOUT_FILENO, base + n, 1);
-	else
+	return (i);
+}
+
+char	*pre_str(char *str, int *s)
+{
+	while (*str == ' ')
+		str++;
+	while (*str == '+' || *str == '-')
 	{
-		ft_putnbr_base(n / i, base);
-		write(STDOUT_FILENO, base + (n % i), 1);
+		if (*str == '-')
+			*s *= -1;
+		str++;
 	}
+	return (str);
+}
+
+int	ft_atoi_base(char *str, char *base)
+{
+	int	i;
+	int	j;
+	int	sign;
+	int	result;
+
+	i = base_len(base);
+	j = 0;
+	sign = 1;
+	result = 0;
+	if (i == 0 || i == 1)
+		return (0);
+	str = pre_str(str, &sign);
+	while (elem(str[i], base) == 1)
+	{
+		result = result * i + str[i] - base[0];
+		i++;
+	}
+	return (result * sign);
 }
