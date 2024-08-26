@@ -25,15 +25,25 @@ int	elem(char c, char *str)
 	return (count);
 }
 
-void	ft_putnbr_base(int n, char *base);
+void	putnbr_base(long n, char *base, long len);
 
-void	putneg(int n, char *base)
+void	putneg(long n, char *base, long l)
 {
-	if (n == -2147483648)
-	{
-	}
 	write(STDOUT_FILENO, "-", 1);
-	ft_putnbr_base(-n, base);
+	putnbr_base(-n, base, l);
+}
+
+void	putnbr_base(long n, char *base, long len)
+{
+	if (n < 0)
+		putneg(n, base, len);
+	else if (n < len)
+		write(STDOUT_FILENO, base + n, 1);
+	else
+	{
+		putnbr_base(n / len, base, len);
+		write(STDOUT_FILENO, base + (n % len), 1);
+	}
 }
 
 void	ft_putnbr_base(int n, char *base)
@@ -51,13 +61,5 @@ void	ft_putnbr_base(int n, char *base)
 	}
 	if (i == 0 || i == 1)
 		return ;
-	if (n < 0)
-		putneg(n, base);
-	else if (n < i)
-		write(STDOUT_FILENO, base + n, 1);
-	else
-	{
-		ft_putnbr_base(n / i, base);
-		write(STDOUT_FILENO, base + (n % i), 1);
-	}
+	putnbr_base(n, base, i);
 }

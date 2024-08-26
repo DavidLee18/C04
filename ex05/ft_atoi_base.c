@@ -54,6 +54,20 @@ char	*pre_str(char *str, int *s)
 	return (str);
 }
 
+int	elem_index(char c, char *base)
+{
+	int	i;
+
+	i = 0;
+	while (base[i])
+	{
+		if (c == base[i])
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
 int	ft_atoi_base(char *str, char *base)
 {
 	int	i;
@@ -68,9 +82,9 @@ int	ft_atoi_base(char *str, char *base)
 	if (i == 0 || i == 1)
 		return (0);
 	str = pre_str(str, &sign);
-	while (elem(str[j], base) == 1)
+	while (str[j] && elem(str[j], base) == 1)
 	{
-		result = result * j + str[j] - base[0];
+		result = result * i + elem_index(str[j], base);
 		j++;
 	}
 	return (result * sign);
